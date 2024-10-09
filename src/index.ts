@@ -11,7 +11,7 @@ interface Options {
   withBark?: false | string
 }
 
-export async function doAttendanceForAccount(token: string, options: Options) {
+export async function doAttendanceForAccount(token: string, notify: any, options: Options) {
   const { code } = await auth(token)
   const { cred, token: signToken } = await signIn(code)
   const { list } = await getBinding(cred, signToken)
@@ -41,6 +41,7 @@ export async function doAttendanceForAccount(token: string, options: Options) {
             messages.join('\n\n'),
           )
         }
+        await notify.sendNotify(`【森空岛每日签到】`, messages.join('\n'))
         // quit with error
         if (hasError)
           process.exit(1)
